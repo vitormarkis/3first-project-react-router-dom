@@ -1,22 +1,43 @@
 import React from "react"
-import { ActionFunctionArgs, Form, redirect, useNavigate } from "react-router-dom"
+import {
+  ActionFunctionArgs,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom"
+import { useStore } from "../contexts/store"
 import { api } from "../libs/axios"
 import { LeftArrow, PlusCircle } from "../styles/icons"
 import { UserFields, UserProps } from "./users"
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
+  return params.id
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData()
   const formFields = Object.fromEntries(formData) as unknown
   const userFields = formFields as UserFields
-  const id: string = Math.random().toString(20).substring(2, 20)
-  const userWithID = { id, ...userFields } as UserProps
+  const userWithID = { id: params.id, ...userFields } as UserProps
   api.post("http://localhost:3000/users/", userWithID)
   return redirect("/")
 }
 
 const Add: React.FC = () => {
-  //   const user = useLoaderData() as UserProps
+  const id = useLoaderData() as UserProps
+  const { state, dispatch } = useStore()
   const navigate = useNavigate()
+
+  function handleOnChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = event.currentTarget
+    dispatch({ type: "formFields/onChange", payload: { key: name, field: value } })
+  }
+
+  function handleAddClick() {
+    dispatch({ type: "user/Add", payload: { ...state.formFields, id } })
+  }
 
   return (
     <Form method="post" className="bg-white flex flex-col gap-3">
@@ -29,18 +50,21 @@ const Add: React.FC = () => {
         placeholder="Nome..."
         name="name"
         className="p-4 rounded-xl outline-neutral-400 outline-offset-4 bg-neutral-100 text-neutral-700 placeholder-neutral-400 text-xl"
+        onChange={handleOnChangeInput}
       />
       <input
         type="text"
         placeholder="Idade..."
         name="age"
         className="p-4 rounded-xl outline-neutral-400 outline-offset-4 bg-neutral-100 text-neutral-700 placeholder-neutral-400 text-xl"
+        onChange={handleOnChangeInput}
       />
       <input
         type="text"
         placeholder="Avatar..."
         name="avatar"
         className="p-4 rounded-xl outline-neutral-400 outline-offset-4 bg-neutral-100 text-neutral-700 placeholder-neutral-400 text-xl"
+        onChange={handleOnChangeInput}
       />
 
       <div className="flex gap-3 ml-auto">
@@ -51,7 +75,7 @@ const Add: React.FC = () => {
         >
           <LeftArrow width={48} height={48} className="text-neutral-800" />
         </button>
-        <button type="submit" className="p-2 rounded-xl text-white text-xl w-fit">
+        <button onClick={handleAddClick} type="submit" className="p-2 rounded-xl text-white text-xl w-fit">
           <PlusCircle width={48} height={48} className="text-neutral-800" />
         </button>
       </div>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useLoaderData } from "react-router-dom"
+import { useStore } from "../contexts/store"
+import { api } from "../libs/axios"
 
 // import { Container } from './styles';
 
@@ -14,9 +16,15 @@ export interface UserProps extends UserFields {
 }
 
 const Users: React.FC = () => {
-  const users = useLoaderData() as UserProps[]
+  // const users = useLoaderData() as UserProps[]
+  const { state, dispatch } = useStore()
+  const { users } = state
 
-  console.log(users)
+  useEffect(() => {
+    api
+      .get(`http://localhost:3000/users`)
+      .then((response) => dispatch({ type: "user/Set", payload: response.data }))
+  }, [])
   return (
     <div>
       <ul className="list-none">

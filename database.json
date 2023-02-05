@@ -1,28 +1,16 @@
 {
   "users": [
     {
-      "id": "5efbh1a907eb4",
-      "name": "Amanda Machado",
-      "age": "41",
-      "avatar": "https://github.com/alexiakattah.png"
+      "id": "305i9bc90j1ei",
+      "name": "Adam Gastineau",
+      "age": "23",
+      "avatar": "https://avatars.githubusercontent.com/u/238679?v=4"
     },
     {
-      "name": "Vitor Rodrigues Markis",
+      "id": "6a22be418b82",
+      "name": "Vitor Markis",
       "age": "20",
-      "avatar": "https://github.com/vitormarkis.png",
-      "id": "73gag3545b08"
-    },
-    {
-      "id": "ecdj49j87db4",
-      "name": "Sergio Ramos",
-      "age": "39",
-      "avatar": "https://github.com/sergiodxa.png"
-    },
-    {
-      "id": "27j0d9cf9ag9i",
-      "name": "Sunil Paii",
-      "age": "35",
-      "avatar": "https://github.com/threepointone.png"
+      "avatar": "https://avatars.githubusercontent.com/u/121525239?v=4"
     }
   ]
 }
